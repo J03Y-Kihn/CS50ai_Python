@@ -138,38 +138,33 @@ def minimax(board):
 
     for possibleMoves in actions(board):
         if turn == "X":
-            currVal = minValue(result(board, possibleMoves), v)
+            currVal = minValue(result(board, possibleMoves))
             if(currVal >= v):
                 optimal = possibleMoves
                 v = currVal
         elif turn == "O":
-            currVal = maxValue(result(board, possibleMoves), v)
+            currVal = maxValue(result(board, possibleMoves))
             if(currVal <= v):
                 optimal = possibleMoves
                 v = currVal
 
     return optimal
 
-#trying to implement alpha beta pruning, if we are giving up, throw away the value variable and make it maxValue(board)
-def maxValue(board, value):
+def maxValue(board):
 
     v = -math.inf
     if terminal(board):
         return utility(board)
     for action in actions(board):
-        v = max(v, minValue(result(board, action), min(v, value)))
-        if v <= value:
-            return v
+        v = max(v, minValue(result(board, action)))
     return v
 
-def minValue(board, value):
+def minValue(board):
     v = math.inf
     if terminal(board):
         return utility(board)
     for action in actions(board):
-        v = min(v, maxValue(result(board, action), max(v, value)))
-        if v >= value:     #if we have already found the lowest possible maximum
-            return v
+        v = min(v, maxValue(result(board, action)))
     return v
 
     
